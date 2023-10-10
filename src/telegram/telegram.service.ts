@@ -6,7 +6,7 @@ import { Message, Users } from './telegram.model'
 @Injectable()
 export class TelegramService {
     constructor(@InjectModel('msg') private msgModel:Model<Message>,@InjectModel('users') private userModel:Model<Users>){}
-     bot = new TelegramBot('6307040796:AAFOs04bluSeHi66XvFEGlRHj2PgR4p1fUM', { polling: true })
+     bot = new TelegramBot('6053505020:AAGsnBwvBvzIto9oMnpSN4R9yq9h4esj7r0', { polling: true })
      WId=-1001927745958
     startBot(){
         this.bot.onText(/\/start/,(msg)=>{
