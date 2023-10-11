@@ -8,7 +8,6 @@ export class TelegramController {
  @Post()
  add(@Body('msg') msg:string){
    this.service.addMessage(msg)
-   return msg
  }
  @Delete('/:id')
  delete(@Param('id') id){
