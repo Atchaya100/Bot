@@ -6,8 +6,10 @@ import { Message, Users } from './telegram.model'
 @Injectable()
 export class TelegramService {
     constructor(@InjectModel('msg') private msgModel:Model<Message>,@InjectModel('users') private userModel:Model<Users>){}
-     bot = new TelegramBot('6053505020:AAGsnBwvBvzIto9oMnpSN4R9yq9h4esj7r0', { polling: true })
+     bot = new TelegramBot('6307040796:AAFOs04bluSeHi66XvFEGlRHj2PgR4p1fUM', { polling: true })
      WId=-1001927745958
+     msg:Message[]=[]
+     user:Users[]=[]
     startBot(){
         this.bot.onText(/\/start/,(msg)=>{
             this.bot.sendMessage(msg.chat.id, `Welcome to the Weather bot ${msg.from.first_name}. Type Weather to subscribe for daily weather updates`)
@@ -48,9 +50,15 @@ export class TelegramService {
         this.bot.banChatMember(this.WId,id)
         const i=await this.userModel.findOneAndDelete({user_id:id})
     }
-    
+    async getMsg(){
+      this.msg= await this.msgModel.find()
+       return this.msg
+    }
+    async getUser(){
+        this.user= await this.userModel.find()
+         return this.user
+      }
+
    
    
 }
-
-
