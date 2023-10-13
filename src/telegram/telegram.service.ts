@@ -29,6 +29,7 @@ export class TelegramService {
                 newUser.save()
                 }
                 }
+                if(msg.text!="/start"){
                 const cityName = msg.text
                 try{
                     const a=await weather.weather(cityName, undefined, 'en')
@@ -39,7 +40,7 @@ export class TelegramService {
                     this.bot.sendMessage(chatId,'Enter correct city name')
                 }
                 
-                
+                }
 
           });
     }
