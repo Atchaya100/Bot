@@ -28,7 +28,7 @@ export class TelegramService {
                 if(k==null){
                 newUser.save()
                 }
-                }
+                }else{
                 if(msg.text!="/start"){
                 const cityName = msg.text
                 try{
@@ -41,7 +41,7 @@ export class TelegramService {
                 }
                 
                 }
-
+                }
           });
     }
     async addMessage(message:any){
