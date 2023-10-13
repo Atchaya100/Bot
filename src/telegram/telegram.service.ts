@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 const TelegramBot = require('node-telegram-bot-api')
+const weather  = require('coding-weather')
 import {InjectModel} from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Message, Users } from './telegram.model'
@@ -10,17 +11,15 @@ export class TelegramService {
      WId=-1001927745958
      msg:Message[]=[]
      user:Users[]=[]
-    startBot(){
+     startBot(){
         this.bot.onText(/\/start/,(msg)=>{
-            this.bot.sendMessage(msg.chat.id, `Welcome to the Weather bot ${msg.from.first_name}. Type Weather to subscribe for daily weather updates`)
+            this.bot.sendMessage(msg.chat.id, `Welcome to the Weather bot ${msg.from.first_name}.\nType Weather to subscribe for daily weather updates.\nEnter city name to get Weather details.`)
         })
         this.bot.on('message',async (msg) => {
                 const chatId = msg.chat.id;
-        
                 if(msg.text=="Weather"){
-                    const data=await this.bot.sendMessage(chatId,"t.me/+W3WVtdvTGV0wMzhl")
+                const data=await this.bot.sendMessage(chatId,"t.me/+W3WVtdvTGV0wMzhl")
                 const username=data.chat.first_name
-                
                 const newUser=  new this.userModel({
                    username:username,
                    user_id:chatId
@@ -30,6 +29,18 @@ export class TelegramService {
                 newUser.save()
                 }
                 }
+                const cityName = msg.text
+                try{
+                    const a=await weather.weather(cityName, undefined, 'en')
+                    this.bot.sendMessage(chatId,`Location:${a.location.name}\nTemperature:${a.current.temp_f} F\nHumidity:${a.current.humidity}\nMain:${a.weather.main}`,
+                    )
+                }
+                catch(error){
+                    this.bot.sendMessage(chatId,'Enter correct city name')
+                }
+                
+                
+
           });
     }
     async addMessage(message:any){
@@ -57,8 +68,6 @@ export class TelegramService {
     async getUser(){
         this.user= await this.userModel.find()
          return this.user
-      }
-
-   
+    }  
    
 }
